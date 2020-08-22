@@ -6,29 +6,39 @@ contract Registation {
 
   struct Student {
     uint32 id;
-    bytes32 name;
+    bytes name;
     uint16 number;
     // uint8 birthday;
-    bytes32 university;
+    bytes university;
     // bytes32 major;
   }
-
-  Student[] public students; 
-
-  // mapping 宣言
-  mapping(address => Student) public students; 
-
+  
+  Student[] public students;
+  // mapping(bytes32 => Student) public students;
+  
   // Student info 登録
   function RegesterInfo(
       string memory _name,
-      uint memory _number,
+      uint32 _number,
       string memory _university) public {
-        students.push(Student(num+1, _name, _number, _university));
-        num++
+        students.push(Student({
+            id: uint32(num+1),
+            name: bytes(_name),
+            number: uint16(_number),
+            university: bytes(_university)
+        }));
+        num++;
   }
 
   function getInfo(
     string memory _name,
-    uint memory _number) public view returns(bytes32){
-    return(students[university]);
+    uint _number) public view returns(bytes32){
+    for (uint i=0; i<num; i++) {
+        if (keccak256(abi.encodePacked(students[i+1].name)) == keccak256(abi.encodePacked(_name))){
+            if (uint(students[i+1].number) == uint(_number)) {
+                return "hoge";
+            }
+        }
+    }
   }
+}
